@@ -49,7 +49,7 @@ nav{position:absolute;top:0;left:0;right:0;z-index:20;padding:2rem 3.5rem;displa
 .p1-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:5}
 .p1-name{
   font-family:'Syne',sans-serif;font-weight:800;
-  font-size:clamp(4.5rem,14vw,12rem);
+  font-size:clamp(3.2rem,9vw,8rem);
   color:var(--verde);
   letter-spacing:-.01em;line-height:.88;
   opacity:0;animation:fadeUp 1.3s ease .3s forwards;
@@ -430,7 +430,7 @@ nav{position:absolute;top:0;left:0;right:0;z-index:20;padding:2rem 3.5rem;displa
 const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
-(function ar(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(ar)})();
+(function ar(){rx+=(mx-rx)*.28;ry+=(my-ry)*.28;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(ar)})();
 document.querySelectorAll('a,button,.sp-proj,.yoga-b,.art-cell,.cv-e').forEach(el=>{
   el.addEventListener('mouseenter',()=>{cursor.style.transform='translate(-50%,-50%) scale(2.5)';ring.style.transform='translate(-50%,-50%) scale(1.5)'});
   el.addEventListener('mouseleave',()=>{cursor.style.transform='translate(-50%,-50%) scale(1)';ring.style.transform='translate(-50%,-50%) scale(1)'});
