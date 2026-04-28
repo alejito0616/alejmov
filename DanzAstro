@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALEJMOV — Alejandro Murillo Orrego</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Syne:wght@400;600;700;800&family=Crimson+Pro:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --negro: #11150f;
+  --tierra: #5a5539;
+  --verde: #719241;
+  --lavanda: #e2c6dc;
+  --morado: #714b6c;
+  --blanco: #e5e4e2;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden}
+body{font-family:'Crimson Pro',serif;cursor:none;background:var(--negro)}
+
+/* CURSOR */
+.cursor{position:fixed;width:6px;height:6px;background:var(--verde);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s,background .5s}
+.cursor-ring{position:fixed;width:26px;height:26px;border:1px solid rgba(113,146,65,.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .22s ease,border-color .5s}
+body.page2-active .cursor{background:var(--lavanda)}
+body.page2-active .cursor-ring{border-color:rgba(226,198,220,.35)}
+
+/* PÁGINAS */
+.page{position:fixed;top:0;left:0;width:100%;height:100%;transition:transform .95s cubic-bezier(.77,0,.18,1);overflow:hidden}
+#page1{background:var(--negro);transform:translateY(0);z-index:2}
+#page1.slide-up{transform:translateY(-100%)}
+#page2{background:var(--blanco);transform:translateY(100%);z-index:1}
+#page2.slide-up{transform:translateY(0)}
+
+/* SUBPAGES */
+.subpage{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10;transform:translateY(100%);transition:transform .88s cubic-bezier(.77,0,.18,1);overflow-y:auto}
+.subpage.open{transform:translateY(0)}
+
+canvas.bg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
+
+/* NAV */
+nav{position:absolute;top:0;left:0;right:0;z-index:20;padding:2rem 3.5rem;display:flex;justify-content:space-between;align-items:center}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;letter-spacing:.3em;text-decoration:none}
+.nav-back{font-family:'Syne',sans-serif;font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;background:none;border:none;cursor:none;padding:0;display:flex;align-items:center;gap:.5rem;transition:opacity .3s}
+.nav-back:hover{opacity:.7}
+
+/* ====== PAGE 1 — NEGRO, letra VERDE ====== */
+#page1 .nav-logo{color:var(--verde)}
+.p1-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:5}
+.p1-name{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(4.5rem,14vw,12rem);
+  color:var(--verde);
+  letter-spacing:-.01em;line-height:.88;
+  opacity:0;animation:fadeUp 1.3s ease .3s forwards;
+  position:relative;
+}
+/* glow sutil en el nombre */
+.p1-name::after{
+  content:'ALEJMOV';
+  position:absolute;top:0;left:0;width:100%;
+  color:var(--verde);
+  filter:blur(22px);opacity:.35;
+  pointer-events:none;
+}
+.p1-full{
+  font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
+  font-size:clamp(.9rem,2vw,1.2rem);letter-spacing:.22em;
+  color:rgba(113,146,65,.65);
+  margin-top:1.3rem;opacity:0;animation:fadeUp 1.3s ease .7s forwards;
+}
+.p1-tag{
+  font-family:'Syne',sans-serif;font-size:clamp(.6rem,1.1vw,.72rem);
+  letter-spacing:.3em;text-transform:uppercase;
+  color:rgba(113,146,65,.35);
+  margin-top:.7rem;opacity:0;animation:fadeUp 1.3s ease .9s forwards;
+}
+.scroll-hint{
+  position:absolute;bottom:2.8rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:.5rem;
+  opacity:0;animation:fadeIn 1.5s ease 2.2s forwards;z-index:5;
+}
+.scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,transparent,rgba(113,146,65,.5));animation:scrollPulse 2.2s ease-in-out infinite}
+.scroll-label{font-family:'Syne',sans-serif;font-size:.52rem;letter-spacing:.45em;text-transform:uppercase;color:rgba(113,146,65,.35)}
+
+/* ====== PAGE 2 — BLANCO MINERAL, letra LAVANDA ====== */
+#page2 .nav-logo{color:var(--lavanda)}
+.p2-center{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1rem 5.5rem;z-index:5;
+}
+.p2-btn{
+  font-family:'Syne',sans-serif;font-weight:700;
+  font-size:clamp(1.3rem,2.7vw,2.1rem);
+  letter-spacing:.04em;
+  color:var(--lavanda);
+  background:none;border:none;cursor:none;
+  text-align:left;padding:.4rem 0;position:relative;
+  transition:color .35s;opacity:0;white-space:nowrap;
+}
+.p2-btn::after{content:'';position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--morado);transition:width .4s ease}
+.p2-btn:hover{color:var(--morado)}
+.p2-btn:hover::after{width:100%}
+.p2-btn.visible{animation:fadeUp .75s ease forwards}
+.p2-btn:nth-child(1){animation-delay:.04s}.p2-btn:nth-child(2){animation-delay:.13s}
+.p2-btn:nth-child(3){animation-delay:.22s}.p2-btn:nth-child(4){animation-delay:.31s}
+.p2-btn:nth-child(5){animation-delay:.4s}.p2-btn:nth-child(6){animation-delay:.49s}
+.p2-btn:nth-child(7){animation-delay:.58s}.p2-btn:nth-child(8){animation-delay:.67s}
+.p2-coords{position:absolute;bottom:2.5rem;left:3.5rem;font-family:'Syne',sans-serif;font-size:.52rem;letter-spacing:.3em;color:rgba(113,74,108,.3);z-index:5}
+.p2-year{position:absolute;bottom:2.5rem;right:3.5rem;font-family:'Syne',sans-serif;font-size:.52rem;letter-spacing:.3em;color:rgba(113,74,108,.3);z-index:5}
+
+/* ====== SUBPAGES ====== */
+#sp-manifiesto{background:var(--negro);color:var(--blanco)}
+#sp-astronomia{background:var(--negro);color:var(--blanco)}
+#sp-arte{background:#0f120c;color:var(--blanco)}
+#sp-danza{background:var(--blanco);color:var(--negro)}
+#sp-yoga{background:#0b0f08;color:var(--blanco)}
+#sp-cv{background:var(--blanco);color:var(--negro)}
+#sp-digital{background:var(--negro);color:var(--blanco)}
+#sp-contacto{background:#0d080f;color:var(--blanco)}
+
+.sp-nav{position:fixed;top:0;left:0;right:0;z-index:20;padding:2rem 3.5rem;display:flex;justify-content:space-between;align-items:center}
+.sp-inner{max-width:1080px;margin:0 auto;padding:8rem 4rem 6rem;min-height:100%;position:relative;z-index:5}
+.sp-label{font-family:'Syne',sans-serif;font-size:.58rem;letter-spacing:.5em;text-transform:uppercase;color:var(--verde);margin-bottom:1.4rem;display:block}
+.sp-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(2.5rem,5.5vw,4.8rem);line-height:1.05;margin-bottom:2.2rem}
+.sp-title em{font-style:italic;color:var(--lavanda)}
+.sp-title.lit em{color:var(--morado)}
+.sp-div{width:48px;height:1px;background:var(--lavanda);margin:2.2rem 0;opacity:.35}
+.sp-div.lit{background:var(--morado)}
+.sp-body{font-size:1.08rem;line-height:1.9;max-width:640px;opacity:.68}
+
+/* Projects */
+.sp-projects{margin-top:3rem}
+.sp-proj{display:flex;gap:2rem;padding:1.5rem 0;border-bottom:1px solid rgba(226,198,220,.07);transition:border-color .3s;cursor:default}
+.sp-proj:hover{border-bottom-color:rgba(226,198,220,.28)}
+.sp-proj-num{font-family:'Syne',sans-serif;font-size:.58rem;letter-spacing:.3em;color:var(--tierra);opacity:.55;flex-shrink:0;padding-top:.3rem}
+.sp-proj-cat{font-family:'Syne',sans-serif;font-size:.53rem;letter-spacing:.25em;text-transform:uppercase;color:var(--verde);margin-bottom:.28rem}
+.sp-proj-name{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--blanco)}
+.sp-proj-name.lit{color:var(--negro)}
+.sp-proj-sub{font-size:.82rem;font-style:italic;color:rgba(229,228,226,.35);margin-top:.12rem}
+.sp-proj-sub.lit{color:rgba(17,21,15,.35)}
+
+/* Tags */
+.sp-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:2.2rem}
+.sp-tag{padding:.28rem .85rem;border:1px solid rgba(226,198,220,.15);font-family:'Syne',sans-serif;font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--lavanda);transition:border-color .3s}
+.sp-tag:hover{border-color:var(--lavanda)}
+.sp-tag.lit{border-color:rgba(113,74,108,.18);color:var(--morado)}
+.sp-tag.lit:hover{border-color:var(--morado)}
+
+/* Research */
+.rc{margin-top:3rem;padding:2.6rem;border:1px solid rgba(226,198,220,.09);background:rgba(226,198,220,.018);position:relative}
+.rc::before{content:'⊛';position:absolute;top:1.6rem;right:1.6rem;font-size:1rem;color:rgba(226,198,220,.07)}
+.rc-badge{display:inline-block;padding:.22rem .7rem;border:1px solid rgba(113,146,65,.28);margin-bottom:1.3rem;font-family:'Syne',sans-serif;font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:var(--verde)}
+.rc-title{font-family:'Cormorant Garamond',serif;font-size:1.65rem;font-weight:300;color:var(--blanco);line-height:1.3;margin-bottom:1.3rem}
+.rc-text{font-size:.98rem;line-height:1.9;color:rgba(229,228,226,.55)}
+
+/* CV */
+.cv-cols{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;margin-top:3rem}
+.cv-col-h{font-family:'Syne',sans-serif;font-size:.58rem;letter-spacing:.4em;text-transform:uppercase;color:var(--morado);margin-bottom:1.8rem;padding-bottom:.7rem;border-bottom:1px solid rgba(113,74,108,.18)}
+.cv-e{margin-bottom:1.8rem;padding-left:1.1rem;border-left:1px solid rgba(113,74,108,.1);transition:border-color .3s}
+.cv-e:hover{border-left-color:var(--morado)}
+.cv-yr{font-family:'Syne',sans-serif;font-size:.58rem;letter-spacing:.2em;color:var(--tierra)}
+.cv-r{font-family:'Cormorant Garamond',serif;font-size:1.12rem;color:var(--negro);margin:.2rem 0}
+.cv-o{font-size:.82rem;font-style:italic;color:rgba(17,21,15,.35)}
+
+/* Art grid */
+.art-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:3rem}
+.art-cell{aspect-ratio:1;position:relative;border:1px solid rgba(226,198,220,.04);overflow:hidden;cursor:none}
+.art-cell canvas{width:100%;height:100%;display:block}
+.art-cell-lbl{position:absolute;bottom:0;left:0;right:0;padding:.7rem .9rem;background:linear-gradient(transparent,rgba(17,21,15,.88));opacity:0;transition:opacity .4s}
+.art-cell:hover .art-cell-lbl{opacity:1}
+.art-cell-name{font-family:'Syne',sans-serif;font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--lavanda)}
+
+/* Yoga */
+.yoga-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem}
+.yoga-b{padding:2.2rem;border:1px solid rgba(113,146,65,.09);transition:border-color .4s}
+.yoga-b:hover{border-color:rgba(113,146,65,.28)}
+.yoga-b-title{font-family:'Syne',sans-serif;font-weight:700;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--verde);margin-bottom:.85rem}
+.yoga-b-text{font-size:.98rem;line-height:1.85;color:rgba(229,228,226,.52)}
+
+/* Danza rings */
+.danza-rings{display:flex;align-items:center;justify-content:center;margin:3.5rem 0;position:relative;height:260px}
+.d-ring{position:absolute;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%)}
+
+/* Contacto */
+.contact-big{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,5vw,4.2rem);font-weight:300;line-height:1.1;color:var(--blanco);margin:2.5rem 0 1.3rem}
+.contact-big em{font-style:italic;color:var(--lavanda)}
+.contact-links{display:flex;gap:1.1rem;flex-wrap:wrap;margin-top:2.2rem}
+.c-link{padding:.8rem 1.9rem;border:1px solid rgba(226,198,220,.18);font-family:'Syne',sans-serif;font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--blanco);text-decoration:none;transition:all .35s;background:none;cursor:none}
+.c-link:hover{border-color:var(--lavanda);color:var(--lavanda);background:rgba(226,198,220,.03)}
+.c-link.primary{background:rgba(226,198,220,.04);border-color:rgba(226,198,220,.28)}
+.contact-geo{font-family:'Syne',sans-serif;font-size:.55rem;letter-spacing:.3em;color:rgba(229,228,226,.1);margin-top:4.5rem}
+
+/* Keyframes */
+@keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes scrollPulse{0%,100%{opacity:.25;transform:scaleY(1)}50%{opacity:1;transform:scaleY(1.15)}}
+@keyframes spinR{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes spinL{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(-360deg)}}
+
+@media(max-width:768px){
+  nav,.sp-nav{padding:1.4rem 1.8rem}
+  .p2-center{grid-template-columns:1fr;gap:.55rem 0}
+  .p2-btn{font-size:clamp(1.35rem,5.5vw,1.9rem)}
+  .sp-inner{padding:5.5rem 1.8rem 4rem}
+  .sp-title{font-size:clamp(2rem,8.5vw,3.2rem)}
+  .cv-cols{grid-template-columns:1fr;gap:1.8rem}
+  .art-grid{grid-template-columns:repeat(2,1fr)}
+  .yoga-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- PAGE 1: NEGRO + letra VERDE -->
+<div class="page" id="page1">
+  <canvas class="bg" id="canvas1"></canvas>
+  <nav>
+    <span class="nav-logo">ALEJMOV</span>
+  </nav>
+  <div class="p1-center">
+    <div class="p1-name">ALEJMOV</div>
+    <div class="p1-full">Alejandro Murillo Orrego</div>
+    <div class="p1-tag">Astrónomo · Bailarín · Artista · Medellín, Colombia</div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span class="scroll-label">Desliza</span>
+  </div>
+</div>
+
+<!-- PAGE 2: BLANCO MINERAL + letra LAVANDA -->
+<div class="page" id="page2">
+  <canvas class="bg" id="canvas2"></canvas>
+  <nav>
+    <span class="nav-logo">ALEJMOV</span>
+  </nav>
+  <div class="p2-center">
+    <button class="p2-btn" onclick="openSub('sp-manifiesto')">Manifiesto</button>
+    <button class="p2-btn" onclick="openSub('sp-astronomia')">Astronomía</button>
+    <button class="p2-btn" onclick="openSub('sp-arte')">Proyectos</button>
+    <button class="p2-btn" onclick="openSub('sp-digital')">Arte Digital</button>
+    <button class="p2-btn" onclick="openSub('sp-danza')">Danza</button>
+    <button class="p2-btn" onclick="openSub('sp-yoga')">Yoga</button>
+    <button class="p2-btn" onclick="openSub('sp-cv')">Hoja de Vida</button>
+    <button class="p2-btn" onclick="openSub('sp-contacto')">Contacto</button>
+  </div>
+  <div class="p2-coords">6°14'N · 75°34'O · Antioquia</div>
+  <div class="p2-year">2024</div>
+</div>
+
+<!-- SUBPAGES -->
+<div class="subpage" id="sp-manifiesto">
+  <div class="sp-nav" style="background:linear-gradient(to bottom,rgba(17,21,15,.9),transparent)">
+    <span class="nav-logo" style="color:var(--verde)">ALEJMOV</span>
+    <button class="nav-back" onclick="closeSub('sp-manifiesto')" style="color:var(--verde)">← Volver</button>
+  </div>
+  <div class="sp-inner">
+    <span class="sp-label">Identidad · Manifiesto</span>
+    <h2 class="sp-title">Habito el umbral<br>entre el cosmos<br><em>y el cuerpo</em></h2>
+    <div class="sp-div"></div>
+    <p class="sp-body">Soy astrónomo, bailarín, creador escénico, gestor cultural y profesor de yoga. Mi trabajo nace del encuentro entre la observación del universo y la conciencia del movimiento.</p>
+    <br>
+    <p class="sp-body">Nacido en Antioquia, Colombia, llevo en mí la geografía de las montañas, la biodiversidad de una tierra que vibra, y la memoria de un pueblo que danza para recordar quién es.</p>
+    <br>
+    <p class="sp-body" style="font-style:italic;font-size:1.18rem;opacity:.5">"La ciencia y el arte son dos idiomas del mismo asombro. El frailejón que crece en el páramo es constelación en tierra."</p>
+    <div class="sp-tags">
+      <span class="sp-tag">Astronomía</span><span class="sp-tag">Danza Contemporánea</span>
+      <span class="sp-tag">Arte Escénico</span><span class="sp-tag">Gestión Cultural</span>
+      <span class="sp-tag">Arte Digital</span><span class="sp-tag">Antioquia · Colombia</span>
+    </div>
+  </div>
+</div>
+
+<div class="subpage" id="sp-astronomia">
+  <div class="sp-nav" style="background:linear-gradient(to bottom,rgba(17,21,15,.9),transparent)">
+    <span class="nav-logo" style="color:var(--lavanda)">ALEJMOV</span>
+    <button class="nav-back" onclick="closeSub('sp-astronomia')" style="color:var(--lavanda)">← Volver</button>
+  </div>
+  <div class="sp-inner">
+    <span class="sp-label">Ciencia · Investigación</span>
+    <h2 class="sp-title">El universo<br>como <em>pregunta</em></h2>
+    <div class="sp-div"></div>
+    <p class="sp-body">La astronomía como práctica de asombro. La investigación como forma de habitar el misterio con rigor y poesía. Astrofísica, binarias eclipsantes, astronomía cultural.</p>
+    <div class="rc">
+      <span class="rc-badge">✦ Trabajo de Grado</span>
+      <div class="rc-title">Caracterización fotométrica de sistemas binarios eclipsantes</div>
+      <p class="rc-text">Análisis de curvas de luz para determinar parámetros físicos fundamentales. Combina observación telescópica, análisis espectral y modelado computacional.</p>
+      <p class="rc-text" style="margin-top:1rem;font-style:italic;color:rgba(229,228,226,.28)">Universidad de Antioquia · Medellín · 2024</p>
+    </div>
+    <div class="sp-tags" style="margin-top:2.5rem">
+      <span class="sp-tag">Astrofísica</span><span class="sp-tag">Fotometría</span>
+      <span class="sp-tag">Binarias Eclipsantes</span><span class="sp-tag">Astronomía Cultural</span><span class="sp-tag">Divulgación</span>
+    </div>
+  </div>
+</div>
+
+<div class="subpage" id="sp-arte">
+  <div class="sp-nav" style="background:linear-gradient(to bottom,rgba(15,18,12,.9),transparent)">
+    <span class="nav-logo" style="color:var(--lavanda)">ALEJMOV</span>
+    <button class="nav-back" onclick="closeSub('sp-arte')" style="color:var(--lavanda)">← Volver</button>
+  </div>
+  <div class="sp-inner">
+    <span class="sp-label">Arte · Escena · Gestión</span>
+    <h2 class="sp-title">Obras que<br><em>construyen mundos</em></h2>
+    <div class="sp-div"></div>
+    <div class="sp-projects">
+      <div class="sp-proj"><span class="sp-proj-num">01</span><div><div class="sp-proj-cat">Creación Escénica · Danza</div><div class="sp-proj-name">Mapa Estelar del Cuerpo</div><div class="sp-proj-sub">Coreografía sobre anatomía y cartografía cósmica · 2023</div></div></div>
+      <div class="sp-proj"><span class="sp-proj-num">02</span><div><div class="sp-proj-cat">Gestión Cultural · Comunidad</div><div class="sp-proj-name">Cielo Abierto</div><div class="sp-proj-sub">Astronomía comunitaria en barrios periféricos de Medellín · 2022</div></div></div>
+      <div class="sp-proj"><span class="sp-proj-num">03</span><div><div class="sp-proj-cat">Performance · Arte Vivo</div><div class="sp-proj-name">Frailejón de Luz</div><div class="sp-proj-sub">Instalación sobre biodiversidad, páramo y memoria territorial · 2023</div></div></div>
+      <div class="sp-proj"><span class="sp-proj-num">04</span><div><div class="sp-proj-cat">Fotografía · Astrofotografía</div><div class="sp-proj-name">Cielos de Antioquia</div><div class="sp-proj-sub">Serie fotográfica de cielos nocturnos rurales · 2024</div></div></div>
+      <div class="sp-proj"><span class="sp-proj-num">05</span><div><div class="sp-proj-cat">Arte Digital · Datos</div><div class="sp-proj-name">Curvas de Luz</div><div class="sp-proj-sub">Visualización artística de datos astronómicos · 2024</div></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="subpage" id="sp-digital">
+  <div class="sp-nav" style="background:linear-gradient(to bottom,rgba(17,21,15,.9),transparent)">
+    <span class="nav-logo" style="color:var(--lavanda)">ALEJMOV</span>
+    <button class="nav-back" onclick="closeSub('sp-digital')" style="color:var(--lavanda)">← Volver</button>
+  </div>
+  <div class="sp-inner">
+    <span class="sp-label">Arte Digital · Generativo</span>
+    <h2 class="sp-title">El cosmos<br><em>traducido</em></h2>
+    <div class="sp-div"></div>
+    <p class="sp-body">Creaciones generativas inspiradas en datos astronómicos y biodiversidad antioqueña. Arte como traducción poética del universo observable.</p>
+    <div class="art-grid" id="artGrid"></div>
+  </div>
+</div>
+
+<div class="subpage" id="sp-danza">
+  <div class="sp-nav" style="background:linear-gradient(to bottom,rgba(229,228,226,.9),transparent)">
+    <span class="nav-logo" style="color:var(--negro)">ALEJMOV</span>
+    <button class="nav-back" onclick="closeSub('sp-danza')" style="color:var(--negro)">← Volver</button>
+  </div>
+  <div class="sp-inner">
+    <span class="sp-label" style="color:var(--morado)">Danza · Movimiento · Cuerpo</span>
+    <h2 class="sp-title lit">El cuerpo es<br>el primer <em>telescopio</em></h2>
+    <div class="sp-div lit"></div>
+    <p class="sp-body" style="font-style:italic;font-size:1.18rem;color:rgba(17,21,15,.5);max-width:520px">"El cuerpo es el primer y más antiguo instrumento para observar el universo."</p>
+    <br>
+    <p class="sp-body" style="color:rgba(17,21,15,.6)">Mi práctica nace de la pregunta sobre qué significa habitar un cuerpo en un universo en expansión. La coreografía como escritura del espacio. El movimiento como astronomía interior.</p>
+    <div class="danza-rings">
+      <div class="d-ring" style="width:100px;height:100px;border:1px solid rgba(113,74,108,.2);animation:spinR 18s linear infinite"></div>
+      <div class="d-ring" style="width:180px;height:180px;border:1px dashed rgba(113,74,108,.12);animation:spinL 32s linear infinite"></div>
+      <div class="d-ring" style="width:255px;height:255px;border:1px solid rgba(113,74,108,.06);animation:spinR 50s linear infinite"></div>
+      <span style="font-family:'Cormorant Garamond',serif;font-size:3.2rem;font-style:italic;color:rgba(113,74,108,.15)">∞</span>
+    </div>
+    <div class="sp-tags">
+      <span class="sp-tag lit">Danza Contemporánea</span><span class="sp-tag lit">Butoh</span>
+      <span class="sp-tag lit">Improvisación</span><span class="sp-tag lit">Contacto</span><span class="sp-tag lit">Creación Escénica</span>
+    </div>
+  </div>
+</div>
+
+<div class="subpage" id="sp-yoga">
+  <div class="sp-nav" style="background:linear-gradient(to bottom,rgba(11,15,8,.9),transparent)">
+    <span class="nav-logo" style="color:var(--verde)">ALEJMOV</span>
+    <button class="nav-back" onclick="closeSub('sp-yoga')" style="color:var(--verde)">← Volver</button>
+  </div>
+  <div class="sp-inner">
+    <span class="sp-label">Yoga · Trabajo Corporal</span>
+    <h2 class="sp-title">El cuerpo como<br><em>territorio</em></h2>
+    <div class="sp-div" style="background:var(--verde)"></div>
+    <p class="sp-body">La práctica del yoga como filosofía de presencia total. Cada postura, un asombro. Cada respiración, una órbita. Enseño desde la mirada de quien también lee el cielo.</p>
+    <div class="yoga-grid">
+      <div class="yoga-b"><div class="yoga-b-title">Hatha Yoga</div><p class="yoga-b-text">Base postural y alineación. El cuerpo como arquitectura viva que aprende a sostenerse con gracia.</p></div>
+      <div class="yoga-b"><div class="yoga-b-title">Vinyasa Flow</div><p class="yoga-b-text">Movimiento fluido con la respiración. La secuencia como poema cinético en el espacio.</p></div>
+      <div class="yoga-b"><div class="yoga-b-title">Trabajo Somático</div><p class="yoga-b-text">Conciencia corporal profunda y escucha interna. La presencia como práctica cotidiana.</p></div>
+      <div class="yoga-b"><div class="yoga-b-title">Meditación</div><p class="yoga-b-text">Prácticas contemplativas de silencio. El observador habitando la quietud del universo interior.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="subpage" id="sp-cv">
+  <div class="sp-nav" style="background:linear-gradient(to bottom,rgba(229,228,226,.9),transparent)">
+    <span class="nav-logo" style="color:var(--negro)">ALEJMOV</span>
+    <button class="nav-back" onclick="closeSub('sp-cv')" style="color:var(--negro)">← Volver</button>
+  </div>
+  <div class="sp-inner">
+    <span class="sp-label" style="color:var(--morado)">Trayectoria · Formación</span>
+    <h2 class="sp-title lit">Hoja<br><em>de vida</em></h2>
+    <div class="sp-div lit"></div>
+    <div class="cv-cols">
+      <div>
+        <div class="cv-col-h">Formación Académica</div>
+        <div class="cv-e"><div class="cv-yr">2019 — 2024</div><div class="cv-r">Pregrado en Astronomía</div><div class="cv-o">Universidad de Antioquia</div></div>
+        <div class="cv-e"><div class="cv-yr">2020 — 2023</div><div class="cv-r">Danza Contemporánea</div><div class="cv-o">Escuela de Artes de Medellín</div></div>
+        <div class="cv-e"><div class="cv-yr">2021 — 2022</div><div class="cv-r">Certificación Yoga</div><div class="cv-o">Instituto de Yoga, Colombia</div></div>
+        <div class="cv-e"><div class="cv-yr">2022</div><div class="cv-r">Arte Digital · Processing · p5.js</div><div class="cv-o">Formación autodidacta</div></div>
+      </div>
+      <div>
+        <div class="cv-col-h">Experiencia Profesional</div>
+        <div class="cv-e"><div class="cv-yr">2023 — presente</div><div class="cv-r">Investigador en Astrofísica</div><div class="cv-o">Grupo de Astronomía, UdeA</div></div>
+        <div class="cv-e"><div class="cv-yr">2022 — presente</div><div class="cv-r">Profesor de Yoga</div><div class="cv-o">Práctica independiente · Medellín</div></div>
+        <div class="cv-e"><div class="cv-yr">2021 — presente</div><div class="cv-r">Creador Escénico & Performer</div><div class="cv-o">Proyectos independientes de danza</div></div>
+        <div class="cv-e"><div class="cv-yr">2020 — 2023</div><div class="cv-r">Gestor Cultural</div><div class="cv-o">Divulgación científica y arte, Medellín</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="subpage" id="sp-contacto">
+  <div class="sp-nav" style="background:linear-gradient(to bottom,rgba(13,8,15,.9),transparent)">
+    <span class="nav-logo" style="color:var(--lavanda)">ALEJMOV</span>
+    <button class="nav-back" onclick="closeSub('sp-contacto')" style="color:var(--lavanda)">← Volver</button>
+  </div>
+  <div class="sp-inner">
+    <span class="sp-label">Contacto · Colaboración</span>
+    <div class="contact-big">Construyamos<br>algo entre <em>mundos</em></div>
+    <p class="sp-body">Abierto a colaboraciones artísticas, proyectos científicos, residencias, conferencias, clases de yoga y todo lo que ocurra en el umbral entre arte y ciencia.</p>
+    <div class="contact-links">
+      <a href="mailto:alejmov@gmail.com" class="c-link primary">✦ Escribir mensaje</a>
+      <a href="#" class="c-link">Instagram</a>
+      <a href="#" class="c-link">LinkedIn</a>
+      <a href="#" class="c-link">ResearchGate</a>
+    </div>
+    <div class="contact-geo">6°14'N · 75°34'O · Medellín, Antioquia, Colombia</div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// CURSOR
+// ══════════════════════════════════════════
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
+(function ar(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(ar)})();
+document.querySelectorAll('a,button,.sp-proj,.yoga-b,.art-cell,.cv-e').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='translate(-50%,-50%) scale(2.5)';ring.style.transform='translate(-50%,-50%) scale(1.5)'});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='translate(-50%,-50%) scale(1)';ring.style.transform='translate(-50%,-50%) scale(1)'});
+});
+
+// ══════════════════════════════════════════
+// FLORES HOLOGRÁFICAS — Processing style
+// Función base que dibuja una flor tipo lámpara 3D
+// con líneas de wire, aura blur y colores iridiscentes
+// ══════════════════════════════════════════
+function drawHolographicFlower(ctx, cx, cy, t, scale, config) {
+  const {petals, layers, hue1, hue2, alpha, wireColor, glowColor, blurAmt, style} = config;
+  
+  ctx.save();
+  ctx.translate(cx, cy);
+
+  // ── AURA EXTERNA (blur gaussiano simulado con círculos gradiente) ──
+  for (let g = 3; g >= 0; g--) {
+    const gSize = scale * (1.4 + g * 0.6);
+    const grd = ctx.createRadialGradient(0, 0, 0, 0, 0, gSize);
+    grd.addColorStop(0, `hsla(${hue1},60%,75%,${alpha * 0.08 / (g+1)})`);
+    grd.addColorStop(0.5, `hsla(${hue2},70%,65%,${alpha * 0.04 / (g+1)})`);
+    grd.addColorStop(1, `hsla(${hue1},50%,60%,0)`);
+    ctx.beginPath();
+    ctx.arc(0, 0, gSize, 0, Math.PI * 2);
+    ctx.fillStyle = grd;
+    ctx.fill();
+  }
+
+  // ── PÉTALOS AURA (bloom blur) ──
+  for (let p = 0; p < petals; p++) {
+    const angle = (p / petals) * Math.PI * 2 + t * 0.15;
+    const pw = scale * 0.38;
+    const ph = scale * 0.78;
+    
+    ctx.save();
+    ctx.rotate(angle);
+    
+    // Pétalo con gradiente iridiscente
+    const hShift = (p / petals) * 60;
+    for (let b = 4; b >= 0; b--) {
+      const bScale = 1 + b * 0.15;
+      const grd = ctx.createRadialGradient(0, -ph * 0.4, 0, 0, -ph * 0.4, ph * bScale);
+      grd.addColorStop(0, `hsla(${hue1 + hShift},65%,80%,${alpha * 0.18 / (b+1)})`);
+      grd.addColorStop(0.5, `hsla(${hue2 + hShift},70%,70%,${alpha * 0.1 / (b+1)})`);
+      grd.addColorStop(1, `hsla(${hue1},55%,60%,0)`);
+      
+      ctx.beginPath();
+      ctx.ellipse(0, -ph * 0.45, pw * bScale, ph * 0.5 * bScale, 0, 0, Math.PI * 2);
+      ctx.fillStyle = grd;
+      ctx.fill();
+    }
+    
+    ctx.restore();
+  }
+
+  // ── WIRE FRAME — líneas tipo lámpara 3D ──
+  if (style === 'lotus' || style === 'wire') {
+    // Líneas radiales de la base
+    for (let i = 0; i < petals; i++) {
+      const a = (i / petals) * Math.PI * 2 + t * 0.08;
+      const r = scale * 0.85;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r);
+      ctx.strokeStyle = `hsla(${hue1},60%,85%,${alpha * 0.25})`;
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    }
+    
+    // Arcos concéntricos (efecto lámpara)
+    for (let l = 1; l <= layers; l++) {
+      const lr = scale * (l / layers) * 0.9;
+      for (let p = 0; p < petals; p++) {
+        const a1 = (p / petals) * Math.PI * 2 + t * 0.08;
+        const a2 = ((p + 1) / petals) * Math.PI * 2 + t * 0.08;
+        ctx.beginPath();
+        ctx.arc(0, 0, lr, a1, a2);
+        ctx.strokeStyle = `hsla(${hue1 + (l/layers)*30},55%,80%,${alpha * 0.2 * (1 - l/layers/1.5)})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+    
+    // Curvas de pétalo (tipo vector lotus)
+    for (let p = 0; p < petals; p++) {
+      const a = (p / petals) * Math.PI * 2 + t * 0.08;
+      const tipR = scale * 0.88;
+      const midR = scale * 0.5;
+      const midAngle1 = a - Math.PI / petals * 0.7;
+      const midAngle2 = a + Math.PI / petals * 0.7;
+      
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.quadraticCurveTo(
+        Math.cos(midAngle1) * midR, Math.sin(midAngle1) * midR,
+        Math.cos(a) * tipR, Math.sin(a) * tipR
+      );
+      ctx.quadraticCurveTo(
+        Math.cos(midAngle2) * midR, Math.sin(midAngle2) * midR,
+        0, 0
+      );
+      const hShift = (p / petals) * 40;
+      ctx.strokeStyle = `hsla(${hue1 + hShift},65%,88%,${alpha * 0.35})`;
+      ctx.lineWidth = 0.6;
+      ctx.stroke();
+      
+      // línea central del pétalo
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(Math.cos(a) * tipR, Math.sin(a) * tipR);
+      ctx.strokeStyle = `hsla(${hue2 + hShift},60%,90%,${alpha * 0.22})`;
+      ctx.lineWidth = 0.4;
+      ctx.stroke();
+    }
+  }
+  
+  if (style === 'aura') {
+    // Estilo blob iridiscente (como imagen 2)
+    for (let p = 0; p < petals; p++) {
+      const a = (p / petals) * Math.PI * 2 + t * 0.2;
+      const pr = scale * 0.65;
+      const px = Math.cos(a) * pr;
+      const py = Math.sin(a) * pr;
+      const pSize = scale * 0.42;
+      const hShift = (p / petals) * 80;
+      
+      for (let b = 3; b >= 0; b--) {
+        const bSize = pSize * (1 + b * 0.3);
+        const grd = ctx.createRadialGradient(px, py, 0, px, py, bSize);
+        grd.addColorStop(0, `hsla(${hue1 + hShift},60%,82%,${alpha * 0.35 / (b+1)})`);
+        grd.addColorStop(0.6, `hsla(${hue2 + hShift},65%,72%,${alpha * 0.18 / (b+1)})`);
+        grd.addColorStop(1, 'transparent');
+        ctx.beginPath();
+        ctx.arc(px, py, bSize, 0, Math.PI * 2);
+        ctx.fillStyle = grd;
+        ctx.fill();
+      }
+    }
+    
+    // Anillo wire delgado
+    for (let p = 0; p < petals; p++) {
+      const a1 = (p / petals) * Math.PI * 2 + t * 0.2;
+      const a2 = ((p + 0.5) / petals) * Math.PI * 2 + t * 0.2;
+      const r1 = scale * 0.3, r2 = scale * 0.85;
+      ctx.beginPath();
+      ctx.moveTo(Math.cos(a1) * r1, Math.sin(a1) * r1);
+      ctx.lineTo(Math.cos(a1) * r2, Math.sin(a1) * r2);
+      ctx.strokeStyle = `hsla(${hue1 + (p/petals)*60},50%,90%,${alpha * 0.2})`;
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+      // arco
+      ctx.beginPath();
+      ctx.arc(0, 0, scale * 0.85, a1, a1 + (Math.PI * 2 / petals));
+      ctx.strokeStyle = `hsla(${hue2},50%,88%,${alpha * 0.15})`;
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    }
+  }
+
+  // ── CENTRO ──
+  const cGrd = ctx.createRadialGradient(0, 0, 0, 0, 0, scale * 0.12);
+  cGrd.addColorStop(0, `hsla(${hue1},60%,92%,${alpha * 0.9})`);
+  cGrd.addColorStop(0.5, `hsla(${hue2},65%,78%,${alpha * 0.5})`);
+  cGrd.addColorStop(1, 'transparent');
+  ctx.beginPath();
+  ctx.arc(0, 0, scale * 0.14, 0, Math.PI * 2);
+  ctx.fillStyle = cGrd;
+  ctx.fill();
+  
+  // punto central
+  ctx.beginPath();
+  ctx.arc(0, 0, scale * 0.035, 0, Math.PI * 2);
+  ctx.fillStyle = `hsla(${hue1},50%,95%,${alpha * 0.8})`;
+  ctx.fill();
+  
+  // Destellos tipo ✦
+  for (let s = 0; s < 3; s++) {
+    const sa = t * 0.3 + s * 2.1;
+    const sr = scale * (0.55 + s * 0.22);
+    const sx = Math.cos(sa) * sr, sy = Math.sin(sa) * sr;
+    const size = scale * 0.025;
+    ctx.beginPath();
+    ctx.moveTo(sx - size * 3, sy);ctx.lineTo(sx + size * 3, sy);
+    ctx.moveTo(sx, sy - size * 3);ctx.lineTo(sx, sy + size * 3);
+    ctx.strokeStyle = `hsla(${hue1 + s * 30},50%,95%,${alpha * 0.6})`;
+    ctx.lineWidth = 0.7;
+    ctx.stroke();
+  }
+
+  ctx.restore();
+}
+
+// ══════════════════════════════════════════
+// CANVAS 1 — NEGRO, flores holográficas
+// ══════════════════════════════════════════
+const c1=document.getElementById('canvas1'),cx1=c1.getContext('2d');
+function r1(){c1.width=innerWidth;c1.height=innerHeight}r1();
+window.addEventListener('resize',r1);
+
+// 6 flores distribuidas en los bordes
+const flowers1 = [
+  // Izquierda
+  {xr:.08, yr:.18, scale:0.13, petals:8, layers:5, hue1:270, hue2:200, alpha:.7, style:'lotus'},
+  {xr:.06, yr:.55, scale:0.10, petals:6, layers:4, hue1:290, hue2:220, alpha:.55, style:'aura'},
+  {xr:.09, yr:.82, scale:0.11, petals:7, layers:4, hue1:250, hue2:180, alpha:.6, style:'lotus'},
+  // Derecha
+  {xr:.92, yr:.15, scale:0.12, petals:9, layers:5, hue1:300, hue2:230, alpha:.65, style:'aura'},
+  {xr:.94, yr:.5,  scale:0.09, petals:6, layers:4, hue1:270, hue2:200, alpha:.5, style:'lotus'},
+  {xr:.91, yr:.78, scale:0.13, petals:8, layers:5, hue1:280, hue2:210, alpha:.7, style:'aura'},
+];
+
+// Partículas pequeñas
+const pts1 = Array.from({length:80},()=>({
+  x:Math.random(),y:Math.random(),
+  r:Math.random()*.8+.15,o:Math.random()*.18+.03,
+  tw:Math.random()*Math.PI*2,ts:Math.random()*.008+.002,
+  dx:(Math.random()-.5)*.00004,dy:(Math.random()-.5)*.00003
+}));
+
+let t1=0;
+function dp1(){
+  cx1.clearRect(0,0,c1.width,c1.height);
+  t1+=.008;
+  const W=c1.width,H=c1.height;
+  
+  // Partículas mínimas
+  pts1.forEach(s=>{
+    s.x+=s.dx;s.y+=s.dy;
+    if(s.x>1)s.x=0;if(s.x<0)s.x=1;if(s.y>1)s.y=0;if(s.y<0)s.y=1;
+    s.tw+=s.ts;const tw=(Math.sin(s.tw)+1)*.5;
+    cx1.beginPath();cx1.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);
+    cx1.fillStyle=`rgba(113,146,65,${s.o*(0.3+tw*.7)})`;cx1.fill();
+  });
+  
+  // Flores holográficas
+  flowers1.forEach(f=>{
+    const W=c1.width,H=c1.height;
+    const sc = Math.min(W,H)*f.scale;
+    drawHolographicFlower(cx1, f.xr*W, f.yr*H, t1, sc, {
+      petals:f.petals, layers:f.layers,
+      hue1:f.hue1, hue2:f.hue2,
+      alpha:f.alpha, style:f.style
+    });
+  });
+  
+  requestAnimationFrame(dp1);
+}
+dp1();
+
+// ══════════════════════════════════════════
+// CANVAS 2 — BLANCO MINERAL, flores con tonos morados/tierra
+// ══════════════════════════════════════════
+const c2=document.getElementById('canvas2'),cx2=c2.getContext('2d');
+function r2(){c2.width=innerWidth;c2.height=innerHeight}r2();
+window.addEventListener('resize',r2);
+
+const flowers2 = [
+  {xr:.07, yr:.2,  scale:0.12, petals:8, layers:5, hue1:300, hue2:230, alpha:.5, style:'lotus'},
+  {xr:.05, yr:.58, scale:0.09, petals:6, layers:4, hue1:280, hue2:200, alpha:.42, style:'aura'},
+  {xr:.08, yr:.85, scale:0.11, petals:7, layers:4, hue1:260, hue2:190, alpha:.48, style:'lotus'},
+  {xr:.93, yr:.18, scale:0.11, petals:9, layers:5, hue1:310, hue2:240, alpha:.52, style:'aura'},
+  {xr:.95, yr:.52, scale:0.10, petals:6, layers:4, hue1:290, hue2:210, alpha:.44, style:'lotus'},
+  {xr:.92, yr:.8,  scale:0.12, petals:8, layers:5, hue1:270, hue2:200, alpha:.5, style:'aura'},
+];
+
+const pts2 = Array.from({length:60},()=>({
+  x:Math.random(),y:Math.random(),
+  r:Math.random()*.7+.1,o:Math.random()*.12+.03,
+  tw:Math.random()*Math.PI*2,ts:Math.random()*.007+.002,
+  dx:(Math.random()-.5)*.00004,dy:(Math.random()-.5)*.00003
+}));
+
+let t2=0;
+function dp2(){
+  cx2.clearRect(0,0,c2.width,c2.height);
+  t2+=.007;
+  const W=c2.width,H=c2.height;
+  
+  pts2.forEach(s=>{
+    s.x+=s.dx;s.y+=s.dy;
+    if(s.x>1)s.x=0;if(s.x<0)s.x=1;if(s.y>1)s.y=0;if(s.y<0)s.y=1;
+    s.tw+=s.ts;const tw=(Math.sin(s.tw)+1)*.5;
+    cx2.beginPath();cx2.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);
+    cx2.fillStyle=`rgba(113,74,108,${s.o*(0.3+tw*.7)})`;cx2.fill();
+  });
+  
+  flowers2.forEach(f=>{
+    const sc = Math.min(W,H)*f.scale;
+    drawHolographicFlower(cx2, f.xr*W, f.yr*H, t2, sc, {
+      petals:f.petals, layers:f.layers,
+      hue1:f.hue1, hue2:f.hue2,
+      alpha:f.alpha*0.7, style:f.style
+    });
+  });
+  
+  requestAnimationFrame(dp2);
+}
+dp2();
+
+// ══════════════════════════════════════════
+// PÁGINAS + SCROLL
+// ══════════════════════════════════════════
+let page=1,transitioning=false;
+function goTo2(){
+  if(page===2||transitioning)return;transitioning=true;page=2;
+  document.getElementById('page1').classList.add('slide-up');
+  document.getElementById('page2').classList.add('slide-up');
+  document.body.classList.add('page2-active');
+  setTimeout(()=>document.querySelectorAll('.p2-btn').forEach(b=>b.classList.add('visible')),620);
+  setTimeout(()=>transitioning=false,1000);
+}
+function goTo1(){
+  if(page===1||transitioning)return;transitioning=true;page=1;
+  document.getElementById('page1').classList.remove('slide-up');
+  document.getElementById('page2').classList.remove('slide-up');
+  document.body.classList.remove('page2-active');
+  document.querySelectorAll('.p2-btn').forEach(b=>b.classList.remove('visible'));
+  setTimeout(()=>transitioning=false,1000);
+}
+
+window.addEventListener('wheel',e=>{
+  if(document.querySelector('.subpage.open'))return;
+  if(e.deltaY>30)goTo2();else if(e.deltaY<-30)goTo1();
+},{passive:true});
+let ty=0;
+window.addEventListener('touchstart',e=>{ty=e.touches[0].clientY},{passive:true});
+window.addEventListener('touchend',e=>{
+  if(document.querySelector('.subpage.open'))return;
+  const dy=ty-e.changedTouches[0].clientY;
+  if(dy>40)goTo2();else if(dy<-40)goTo1();
+},{passive:true});
+
+function openSub(id){document.getElementById(id).classList.add('open')}
+function closeSub(id){document.getElementById(id).classList.remove('open')}
+
+// ══════════════════════════════════════════
+// ARTE DIGITAL GRID — flores generativas pequeñas
+// ══════════════════════════════════════════
+const items=[
+  'Nebulosa Antioqueña','Danza Orbital','Curvas de Luz','Jaguar Estelar',
+  'Frailejón Celeste','Orquídea Binaria','Memoria del Cuerpo','Colibrí de Quark'
+];
+const flowerConfigs=[
+  {petals:8,layers:5,hue1:270,hue2:200,style:'lotus'},
+  {petals:6,layers:4,hue1:300,hue2:230,style:'aura'},
+  {petals:9,layers:5,hue1:250,hue2:180,style:'lotus'},
+  {petals:5,layers:3,hue1:290,hue2:220,style:'aura'},
+  {petals:7,layers:4,hue1:280,hue2:210,style:'lotus'},
+  {petals:8,layers:5,hue1:260,hue2:190,style:'aura'},
+  {petals:6,layers:4,hue1:310,hue2:240,style:'lotus'},
+  {petals:9,layers:5,hue1:240,hue2:170,style:'aura'},
+];
+
+const grid=document.getElementById('artGrid');
+items.forEach((name,idx)=>{
+  const cell=document.createElement('div');cell.className='art-cell';
+  const cv=document.createElement('canvas');cv.width=220;cv.height=220;
+  const lbl=document.createElement('div');lbl.className='art-cell-lbl';
+  lbl.innerHTML=`<span class="art-cell-name">${name}</span>`;
+  cell.appendChild(cv);cell.appendChild(lbl);grid.appendChild(cell);
+  
+  const mc=cv.getContext('2d');
+  let ta=idx*0.9;
+  const fc=flowerConfigs[idx];
+  
+  function dc(){
+    mc.clearRect(0,0,220,220);
+    ta+=.014;
+    drawHolographicFlower(mc, 110, 110, ta, 70, {
+      petals:fc.petals, layers:fc.layers,
+      hue1:fc.hue1, hue2:fc.hue2,
+      alpha:.85, style:fc.style
+    });
+    requestAnimationFrame(dc);
+  }
+  dc();
+});
+</script>
+</body>
+</html>
