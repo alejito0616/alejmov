@@ -163,6 +163,8 @@ nav{position:absolute;top:0;left:0;right:0;z-index:20;padding:2rem 3.5rem;displa
 .cv-yr{font-family:'Syne',sans-serif;font-size:.58rem;letter-spacing:.2em;color:var(--tierra)}
 .cv-r{font-family:'Cormorant Garamond',serif;font-size:1.12rem;color:var(--negro);margin:.2rem 0}
 .cv-o{font-size:.82rem;font-style:italic;color:rgba(17,21,15,.35)}
+.cv-download{display:inline-flex;align-items:center;gap:.6rem;margin-top:3rem;padding:.9rem 2rem;border:1px solid rgba(113,74,108,.28);font-family:'Syne',sans-serif;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--morado);text-decoration:none;transition:all .3s}
+.cv-download:hover{background:rgba(113,74,108,.06);border-color:var(--morado)}
 
 /* Art grid */
 .art-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:3rem}
@@ -225,7 +227,7 @@ nav{position:absolute;top:0;left:0;right:0;z-index:20;padding:2rem 3.5rem;displa
   <div class="p1-center">
     <div class="p1-name">ALEJMOV</div>
     <div class="p1-full">Alejandro Murillo Orrego</div>
-    <div class="p1-tag">Astrónomo · Bailarín · Artista · Medellín, Colombia</div>
+    <div class="p1-tag">Astrónomo · Bailarín · Artista de Telas Aéreas · Medellín, Colombia</div>
   </div>
   <div class="scroll-hint">
     <div class="scroll-line"></div>
@@ -250,7 +252,7 @@ nav{position:absolute;top:0;left:0;right:0;z-index:20;padding:2rem 3.5rem;displa
     <button class="p2-btn" onclick="openSub('sp-contacto')">Contacto</button>
   </div>
   <div class="p2-coords">6°14'N · 75°34'O · Antioquia</div>
-  <div class="p2-year">2024</div>
+  <div class="p2-year">2026</div>
 </div>
 
 <!-- SUBPAGES -->
@@ -263,14 +265,14 @@ nav{position:absolute;top:0;left:0;right:0;z-index:20;padding:2rem 3.5rem;displa
     <span class="sp-label">Identidad · Manifiesto</span>
     <h2 class="sp-title">Habito el umbral<br>entre el cosmos<br><em>y el cuerpo</em></h2>
     <div class="sp-div"></div>
-    <p class="sp-body">Soy astrónomo, bailarín, creador escénico, gestor cultural y profesor de yoga. Mi trabajo nace del encuentro entre la observación del universo y la conciencia del movimiento.</p>
+    <p class="sp-body">Soy Alejandro Murillo Orrego, estudiante de Astronomía en la Universidad de Antioquia y bailarín de danza contemporánea y urbana en Medellín, Colombia.</p>
     <br>
-    <p class="sp-body">Nacido en Antioquia, Colombia, llevo en mí la geografía de las montañas, la biodiversidad de una tierra que vibra, y la memoria de un pueblo que danza para recordar quién es.</p>
+    <p class="sp-body">A lo largo de mi formación he encontrado en la danza, el yoga y el pensamiento científico distintas maneras de comprender el movimiento y la transformación. Estas experiencias han influido profundamente en mi práctica artística, en la cual exploro cómo traducir conceptos científicos en lenguajes visuales y performativos.</p>
     <br>
-    <p class="sp-body" style="font-style:italic;font-size:1.18rem;opacity:.5">"La ciencia y el arte son dos idiomas del mismo asombro. El frailejón que crece en el páramo es constelación en tierra."</p>
+    <p class="sp-body" style="font-style:italic;font-size:1.18rem;opacity:.5">"La ciencia y el arte son dos idiomas del mismo asombro."</p>
     <div class="sp-tags">
       <span class="sp-tag">Astronomía</span><span class="sp-tag">Danza Contemporánea</span>
-      <span class="sp-tag">Arte Escénico</span><span class="sp-tag">Gestión Cultural</span>
+      <span class="sp-tag">Dancehall</span><span class="sp-tag">Telas Aéreas</span>
       <span class="sp-tag">Arte Digital</span><span class="sp-tag">Antioquia · Colombia</span>
     </div>
   </div>
@@ -285,16 +287,17 @@ nav{position:absolute;top:0;left:0;right:0;z-index:20;padding:2rem 3.5rem;displa
     <span class="sp-label">Ciencia · Investigación</span>
     <h2 class="sp-title">El universo<br>como <em>pregunta</em></h2>
     <div class="sp-div"></div>
-    <p class="sp-body">La astronomía como práctica de asombro. La investigación como forma de habitar el misterio con rigor y poesía. Astrofísica, binarias eclipsantes, astronomía cultural.</p>
+    <p class="sp-body">Estudiante del pregrado en Astronomía de la Universidad de Antioquia. Mi trabajo de grado explora cómo se forman los núcleos planetarios y cómo la estructura del disco protoplanetario condiciona ese crecimiento.</p>
     <div class="rc">
       <span class="rc-badge">✦ Trabajo de Grado</span>
-      <div class="rc-title">Caracterización fotométrica de sistemas binarios eclipsantes</div>
-      <p class="rc-text">Análisis de curvas de luz para determinar parámetros físicos fundamentales. Combina observación telescópica, análisis espectral y modelado computacional.</p>
-      <p class="rc-text" style="margin-top:1rem;font-style:italic;color:rgba(229,228,226,.28)">Universidad de Antioquia · Medellín · 2024</p>
+      <div class="rc-title">Planetary Core Formation via Pebble Accretion: Disk Truncation Effects</div>
+      <p class="rc-text">Diseño e implementación de un módulo de acreción de guijarros ("pebble accretion") dentro de PSyCo, un código de síntesis poblacional de sistemas planetarios, siguiendo la prescripción de Lambrechts & Johansen (2014) y comparándolo con el modelo clásico de Ida & Lin (2008).</p>
+      <p class="rc-text" style="margin-top:1rem">El estudio analiza el efecto de la truncación del disco protoplanetario sobre la velocidad de formación de núcleos planetarios entre 2 y 10 UA, mostrando que los discos más extendidos aceleran sistemáticamente el crecimiento.</p>
+      <p class="rc-text" style="margin-top:1rem;font-style:italic;color:rgba(229,228,226,.28)">Instituto de Física · Universidad de Antioquia · Director: Germán Chaparro Molano · Junio 2026</p>
     </div>
     <div class="sp-tags" style="margin-top:2.5rem">
-      <span class="sp-tag">Astrofísica</span><span class="sp-tag">Fotometría</span>
-      <span class="sp-tag">Binarias Eclipsantes</span><span class="sp-tag">Astronomía Cultural</span><span class="sp-tag">Divulgación</span>
+      <span class="sp-tag">Astrofísica</span><span class="sp-tag">Formación Planetaria</span>
+      <span class="sp-tag">Pebble Accretion</span><span class="sp-tag">Discos Protoplanetarios</span><span class="sp-tag">Divulgación</span>
     </div>
   </div>
 </div>
@@ -305,15 +308,15 @@ nav{position:absolute;top:0;left:0;right:0;z-index:20;padding:2rem 3.5rem;displa
     <button class="nav-back" onclick="closeSub('sp-arte')" style="color:var(--lavanda)">← Volver</button>
   </div>
   <div class="sp-inner">
-    <span class="sp-label">Arte · Escena · Gestión</span>
+    <span class="sp-label">Arte · Escena · Formación</span>
     <h2 class="sp-title">Obras que<br><em>construyen mundos</em></h2>
     <div class="sp-div"></div>
     <div class="sp-projects">
-      <div class="sp-proj"><span class="sp-proj-num">01</span><div><div class="sp-proj-cat">Creación Escénica · Danza</div><div class="sp-proj-name">Mapa Estelar del Cuerpo</div><div class="sp-proj-sub">Coreografía sobre anatomía y cartografía cósmica · 2023</div></div></div>
-      <div class="sp-proj"><span class="sp-proj-num">02</span><div><div class="sp-proj-cat">Gestión Cultural · Comunidad</div><div class="sp-proj-name">Cielo Abierto</div><div class="sp-proj-sub">Astronomía comunitaria en barrios periféricos de Medellín · 2022</div></div></div>
-      <div class="sp-proj"><span class="sp-proj-num">03</span><div><div class="sp-proj-cat">Performance · Arte Vivo</div><div class="sp-proj-name">Frailejón de Luz</div><div class="sp-proj-sub">Instalación sobre biodiversidad, páramo y memoria territorial · 2023</div></div></div>
-      <div class="sp-proj"><span class="sp-proj-num">04</span><div><div class="sp-proj-cat">Fotografía · Astrofotografía</div><div class="sp-proj-name">Cielos de Antioquia</div><div class="sp-proj-sub">Serie fotográfica de cielos nocturnos rurales · 2024</div></div></div>
-      <div class="sp-proj"><span class="sp-proj-num">05</span><div><div class="sp-proj-cat">Arte Digital · Datos</div><div class="sp-proj-name">Curvas de Luz</div><div class="sp-proj-sub">Visualización artística de datos astronómicos · 2024</div></div></div>
+      <div class="sp-proj"><span class="sp-proj-num">01</span><div><div class="sp-proj-cat">Danza Contemporánea · Performance</div><div class="sp-proj-name">SunY</div><div class="sp-proj-sub">Introspección artística sobre el niño interior, la libertad y la autenticidad · Director y participante · 2024</div></div></div>
+      <div class="sp-proj"><span class="sp-proj-num">02</span><div><div class="sp-proj-cat">Danza Contemporánea · Performance</div><div class="sp-proj-name">Aeternum</div><div class="sp-proj-sub">La espiral como metáfora de la vida: volver a sentir, volver a crear · Director y participante · 2025</div></div></div>
+      <div class="sp-proj"><span class="sp-proj-num">03</span><div><div class="sp-proj-cat">Danza Contemporánea · Colectivo</div><div class="sp-proj-name">Somos</div><div class="sp-proj-sub">Con POLIFONÍAS, Festival Internacional de Movimiento y Arte Contemporáneo de Medellín · Participante · 2025</div></div></div>
+      <div class="sp-proj"><span class="sp-proj-num">04</span><div><div class="sp-proj-cat">Danza Urbana · Formación</div><div class="sp-proj-name">D.A.D Crew</div><div class="sp-proj-sub">Dancehall, Hip Hop, House, Locking, Popping y Whacking · Competencias y presentaciones · 2021–2024</div></div></div>
+      <div class="sp-proj"><span class="sp-proj-num">05</span><div><div class="sp-proj-cat">Telas Aéreas · Performance</div><div class="sp-proj-name">Shows & Eventos Privados</div><div class="sp-proj-sub">Control de altura, caídas, envolvimientos y secuencias coreografiadas · 2020–2026</div></div></div>
     </div>
   </div>
 </div>
@@ -327,7 +330,7 @@ nav{position:absolute;top:0;left:0;right:0;z-index:20;padding:2rem 3.5rem;displa
     <span class="sp-label">Arte Digital · Generativo</span>
     <h2 class="sp-title">El cosmos<br><em>traducido</em></h2>
     <div class="sp-div"></div>
-    <p class="sp-body">Creaciones generativas inspiradas en datos astronómicos y biodiversidad antioqueña. Arte como traducción poética del universo observable.</p>
+    <p class="sp-body">Visualizaciones generativas creadas con Python, C++, Java y Processing, inspiradas en fenómenos astronómicos y procesos naturales. Interés por construir relatos a través de la imagen, el video y los sistemas generativos.</p>
     <div class="art-grid" id="artGrid"></div>
   </div>
 </div>
@@ -341,9 +344,9 @@ nav{position:absolute;top:0;left:0;right:0;z-index:20;padding:2rem 3.5rem;displa
     <span class="sp-label" style="color:var(--morado)">Danza · Movimiento · Cuerpo</span>
     <h2 class="sp-title lit">El cuerpo es<br>el primer <em>telescopio</em></h2>
     <div class="sp-div lit"></div>
-    <p class="sp-body" style="font-style:italic;font-size:1.18rem;color:rgba(17,21,15,.5);max-width:520px">"El cuerpo es el primer y más antiguo instrumento para observar el universo."</p>
+    <p class="sp-body" style="color:rgba(17,21,15,.6)">Bailarín de danza contemporánea y urbana en Medellín, con más de cuatro años de práctica en telas aéreas. Formación técnica en D.A.D Crew (2021–2024) en Dancehall, Hip Hop, House, Locking, Popping y Whacking, con participación en competencias y presentaciones coreográficas.</p>
     <br>
-    <p class="sp-body" style="color:rgba(17,21,15,.6)">Mi práctica nace de la pregunta sobre qué significa habitar un cuerpo en un universo en expansión. La coreografía como escritura del espacio. El movimiento como astronomía interior.</p>
+    <p class="sp-body" style="color:rgba(17,21,15,.6)">Entrenamiento continuo en dancehall con Sara Sierra y Jenny Mulahttaz (2020–2026), trabajando foundation, steps, groove y coreografía, junto al estudio de la historia y el contexto cultural del movimiento. Formación en danza contemporánea en Albanor (2024–2025), enfocada en floorwork, acrobacias y partnering.</p>
     <div class="danza-rings">
       <div class="d-ring" style="width:100px;height:100px;border:1px solid rgba(113,74,108,.2);animation:spinR 18s linear infinite"></div>
       <div class="d-ring" style="width:180px;height:180px;border:1px dashed rgba(113,74,108,.12);animation:spinL 32s linear infinite"></div>
@@ -351,8 +354,8 @@ nav{position:absolute;top:0;left:0;right:0;z-index:20;padding:2rem 3.5rem;displa
       <span style="font-family:'Cormorant Garamond',serif;font-size:3.2rem;font-style:italic;color:rgba(113,74,108,.15)">∞</span>
     </div>
     <div class="sp-tags">
-      <span class="sp-tag lit">Danza Contemporánea</span><span class="sp-tag lit">Butoh</span>
-      <span class="sp-tag lit">Improvisación</span><span class="sp-tag lit">Contacto</span><span class="sp-tag lit">Creación Escénica</span>
+      <span class="sp-tag lit">Danza Contemporánea</span><span class="sp-tag lit">Dancehall</span>
+      <span class="sp-tag lit">Telas Aéreas</span><span class="sp-tag lit">Floorwork</span><span class="sp-tag lit">Partnering</span>
     </div>
   </div>
 </div>
@@ -363,15 +366,13 @@ nav{position:absolute;top:0;left:0;right:0;z-index:20;padding:2rem 3.5rem;displa
     <button class="nav-back" onclick="closeSub('sp-yoga')" style="color:var(--verde)">← Volver</button>
   </div>
   <div class="sp-inner">
-    <span class="sp-label">Yoga · Trabajo Corporal</span>
+    <span class="sp-label">Yoga · Práctica Personal</span>
     <h2 class="sp-title">El cuerpo como<br><em>territorio</em></h2>
     <div class="sp-div" style="background:var(--verde)"></div>
-    <p class="sp-body">La práctica del yoga como filosofía de presencia total. Cada postura, un asombro. Cada respiración, una órbita. Enseño desde la mirada de quien también lee el cielo.</p>
+    <p class="sp-body">El yoga forma parte de mi práctica corporal personal, como complemento a mi formación en danza. No dicto clases; lo incorporo como una herramienta de conciencia corporal, presencia y cuidado en mi propio proceso.</p>
     <div class="yoga-grid">
-      <div class="yoga-b"><div class="yoga-b-title">Hatha Yoga</div><p class="yoga-b-text">Base postural y alineación. El cuerpo como arquitectura viva que aprende a sostenerse con gracia.</p></div>
-      <div class="yoga-b"><div class="yoga-b-title">Vinyasa Flow</div><p class="yoga-b-text">Movimiento fluido con la respiración. La secuencia como poema cinético en el espacio.</p></div>
-      <div class="yoga-b"><div class="yoga-b-title">Trabajo Somático</div><p class="yoga-b-text">Conciencia corporal profunda y escucha interna. La presencia como práctica cotidiana.</p></div>
-      <div class="yoga-b"><div class="yoga-b-title">Meditación</div><p class="yoga-b-text">Prácticas contemplativas de silencio. El observador habitando la quietud del universo interior.</p></div>
+      <div class="yoga-b"><div class="yoga-b-title">Conciencia Corporal</div><p class="yoga-b-text">Una práctica para habitar el cuerpo con más presencia y escucha, dentro de mi formación en movimiento.</p></div>
+      <div class="yoga-b"><div class="yoga-b-title">Complemento a la Danza</div><p class="yoga-b-text">Se articula con mi entrenamiento en danza contemporánea, aportando base para el trabajo de piso y el control corporal.</p></div>
     </div>
   </div>
 </div>
@@ -388,19 +389,27 @@ nav{position:absolute;top:0;left:0;right:0;z-index:20;padding:2rem 3.5rem;displa
     <div class="cv-cols">
       <div>
         <div class="cv-col-h">Formación Académica</div>
-        <div class="cv-e"><div class="cv-yr">2019 — 2024</div><div class="cv-r">Pregrado en Astronomía</div><div class="cv-o">Universidad de Antioquia</div></div>
-        <div class="cv-e"><div class="cv-yr">2020 — 2023</div><div class="cv-r">Danza Contemporánea</div><div class="cv-o">Escuela de Artes de Medellín</div></div>
-        <div class="cv-e"><div class="cv-yr">2021 — 2022</div><div class="cv-r">Certificación Yoga</div><div class="cv-o">Instituto de Yoga, Colombia</div></div>
-        <div class="cv-e"><div class="cv-yr">2022</div><div class="cv-r">Arte Digital · Processing · p5.js</div><div class="cv-o">Formación autodidacta</div></div>
+        <div class="cv-e"><div class="cv-yr">2019 — 2026</div><div class="cv-r">Grado en Astronomía</div><div class="cv-o">Universidad de Antioquia</div></div>
+        <div class="cv-e"><div class="cv-yr">2026</div><div class="cv-r">Estudiante Licenciatura en Danza</div><div class="cv-o">Universidad de Antioquia</div></div>
+        <div class="cv-e"><div class="cv-yr">2020 — 2026</div><div class="cv-r">Formación en Dancehall</div><div class="cv-o">Sara Sierra y Jenny Mulahttaz</div></div>
+        <div class="cv-e"><div class="cv-yr">2024 — 2025</div><div class="cv-r">Danza Contemporánea</div><div class="cv-o">Albanor</div></div>
       </div>
       <div>
-        <div class="cv-col-h">Experiencia Profesional</div>
-        <div class="cv-e"><div class="cv-yr">2023 — presente</div><div class="cv-r">Investigador en Astrofísica</div><div class="cv-o">Grupo de Astronomía, UdeA</div></div>
-        <div class="cv-e"><div class="cv-yr">2022 — presente</div><div class="cv-r">Profesor de Yoga</div><div class="cv-o">Práctica independiente · Medellín</div></div>
-        <div class="cv-e"><div class="cv-yr">2021 — presente</div><div class="cv-r">Creador Escénico & Performer</div><div class="cv-o">Proyectos independientes de danza</div></div>
-        <div class="cv-e"><div class="cv-yr">2020 — 2023</div><div class="cv-r">Gestor Cultural</div><div class="cv-o">Divulgación científica y arte, Medellín</div></div>
+        <div class="cv-col-h">Experiencia</div>
+        <div class="cv-e"><div class="cv-yr">2025 — 2026</div><div class="cv-r">Trabajo de Grado en Astrofísica</div><div class="cv-o">Instituto de Física, Universidad de Antioquia</div></div>
+        <div class="cv-e"><div class="cv-yr">2021 — 2024</div><div class="cv-r">D.A.D Crew</div><div class="cv-o">Dancehall, Hip Hop, House, Locking, Popping, Whacking</div></div>
+        <div class="cv-e"><div class="cv-yr">2020 — 2026</div><div class="cv-r">Telas Aéreas — Shows & Eventos Privados</div><div class="cv-o">Práctica independiente</div></div>
+        <div class="cv-e"><div class="cv-yr">2024 — 2025</div><div class="cv-r">Bailarín & Performer</div><div class="cv-o">SunY, Aeternum, Somos (con POLIFONÍAS)</div></div>
       </div>
     </div>
+    <div class="cv-col-h" style="margin-top:1rem">Habilidades</div>
+    <div class="sp-tags">
+      <span class="sp-tag lit">Telas Aéreas</span><span class="sp-tag lit">Acrobacias</span>
+      <span class="sp-tag lit">Partnering</span><span class="sp-tag lit">Inglés</span>
+      <span class="sp-tag lit">Portugués</span><span class="sp-tag lit">Python</span>
+      <span class="sp-tag lit">C++</span><span class="sp-tag lit">Java</span><span class="sp-tag lit">Processing</span>
+    </div>
+    <a href="cv-alejmov.pdf" class="cv-download" download>↓ Descargar Hoja de Vida (PDF)</a>
   </div>
 </div>
 
@@ -412,14 +421,13 @@ nav{position:absolute;top:0;left:0;right:0;z-index:20;padding:2rem 3.5rem;displa
   <div class="sp-inner">
     <span class="sp-label">Contacto · Colaboración</span>
     <div class="contact-big">Construyamos<br>algo entre <em>mundos</em></div>
-    <p class="sp-body">Abierto a colaboraciones artísticas, proyectos científicos, residencias, conferencias, clases de yoga y todo lo que ocurra en el umbral entre arte y ciencia.</p>
+    <p class="sp-body">Abierto a colaboraciones artísticas, proyectos científicos, presentaciones y todo lo que ocurra en el umbral entre arte y ciencia.</p>
     <div class="contact-links">
-      <a href="mailto:alejmov@gmail.com" class="c-link primary">✦ Escribir mensaje</a>
-      <a href="#" class="c-link">Instagram</a>
-      <a href="#" class="c-link">LinkedIn</a>
-      <a href="#" class="c-link">ResearchGate</a>
+      <a href="mailto:alejito0616@gmail.com" class="c-link primary">✦ Escribir mensaje</a>
+      <a href="https://instagram.com/alejmov_" target="_blank" class="c-link">Instagram · @alejmov_</a>
+      <a href="portafolio-alejmov.pdf" class="c-link" download>Descargar Portafolio (PDF)</a>
     </div>
-    <div class="contact-geo">6°14'N · 75°34'O · Medellín, Antioquia, Colombia</div>
+    <div class="contact-geo">Medellín, Antioquia, Colombia</div>
   </div>
 </div>
 
@@ -438,16 +446,13 @@ document.querySelectorAll('a,button,.sp-proj,.yoga-b,.art-cell,.cv-e').forEach(e
 
 // ══════════════════════════════════════════
 // FLORES HOLOGRÁFICAS — Processing style
-// Función base que dibuja una flor tipo lámpara 3D
-// con líneas de wire, aura blur y colores iridiscentes
 // ══════════════════════════════════════════
 function drawHolographicFlower(ctx, cx, cy, t, scale, config) {
-  const {petals, layers, hue1, hue2, alpha, wireColor, glowColor, blurAmt, style} = config;
+  const {petals, layers, hue1, hue2, alpha, style} = config;
   
   ctx.save();
   ctx.translate(cx, cy);
 
-  // ── AURA EXTERNA (blur gaussiano simulado con círculos gradiente) ──
   for (let g = 3; g >= 0; g--) {
     const gSize = scale * (1.4 + g * 0.6);
     const grd = ctx.createRadialGradient(0, 0, 0, 0, 0, gSize);
@@ -460,7 +465,6 @@ function drawHolographicFlower(ctx, cx, cy, t, scale, config) {
     ctx.fill();
   }
 
-  // ── PÉTALOS AURA (bloom blur) ──
   for (let p = 0; p < petals; p++) {
     const angle = (p / petals) * Math.PI * 2 + t * 0.15;
     const pw = scale * 0.38;
@@ -469,7 +473,6 @@ function drawHolographicFlower(ctx, cx, cy, t, scale, config) {
     ctx.save();
     ctx.rotate(angle);
     
-    // Pétalo con gradiente iridiscente
     const hShift = (p / petals) * 60;
     for (let b = 4; b >= 0; b--) {
       const bScale = 1 + b * 0.15;
@@ -487,9 +490,7 @@ function drawHolographicFlower(ctx, cx, cy, t, scale, config) {
     ctx.restore();
   }
 
-  // ── WIRE FRAME — líneas tipo lámpara 3D ──
   if (style === 'lotus' || style === 'wire') {
-    // Líneas radiales de la base
     for (let i = 0; i < petals; i++) {
       const a = (i / petals) * Math.PI * 2 + t * 0.08;
       const r = scale * 0.85;
@@ -501,7 +502,6 @@ function drawHolographicFlower(ctx, cx, cy, t, scale, config) {
       ctx.stroke();
     }
     
-    // Arcos concéntricos (efecto lámpara)
     for (let l = 1; l <= layers; l++) {
       const lr = scale * (l / layers) * 0.9;
       for (let p = 0; p < petals; p++) {
@@ -515,7 +515,6 @@ function drawHolographicFlower(ctx, cx, cy, t, scale, config) {
       }
     }
     
-    // Curvas de pétalo (tipo vector lotus)
     for (let p = 0; p < petals; p++) {
       const a = (p / petals) * Math.PI * 2 + t * 0.08;
       const tipR = scale * 0.88;
@@ -538,7 +537,6 @@ function drawHolographicFlower(ctx, cx, cy, t, scale, config) {
       ctx.lineWidth = 0.6;
       ctx.stroke();
       
-      // línea central del pétalo
       ctx.beginPath();
       ctx.moveTo(0, 0);
       ctx.lineTo(Math.cos(a) * tipR, Math.sin(a) * tipR);
@@ -549,7 +547,6 @@ function drawHolographicFlower(ctx, cx, cy, t, scale, config) {
   }
   
   if (style === 'aura') {
-    // Estilo blob iridiscente (como imagen 2)
     for (let p = 0; p < petals; p++) {
       const a = (p / petals) * Math.PI * 2 + t * 0.2;
       const pr = scale * 0.65;
@@ -571,10 +568,8 @@ function drawHolographicFlower(ctx, cx, cy, t, scale, config) {
       }
     }
     
-    // Anillo wire delgado
     for (let p = 0; p < petals; p++) {
       const a1 = (p / petals) * Math.PI * 2 + t * 0.2;
-      const a2 = ((p + 0.5) / petals) * Math.PI * 2 + t * 0.2;
       const r1 = scale * 0.3, r2 = scale * 0.85;
       ctx.beginPath();
       ctx.moveTo(Math.cos(a1) * r1, Math.sin(a1) * r1);
@@ -582,7 +577,6 @@ function drawHolographicFlower(ctx, cx, cy, t, scale, config) {
       ctx.strokeStyle = `hsla(${hue1 + (p/petals)*60},50%,90%,${alpha * 0.2})`;
       ctx.lineWidth = 0.5;
       ctx.stroke();
-      // arco
       ctx.beginPath();
       ctx.arc(0, 0, scale * 0.85, a1, a1 + (Math.PI * 2 / petals));
       ctx.strokeStyle = `hsla(${hue2},50%,88%,${alpha * 0.15})`;
@@ -591,7 +585,6 @@ function drawHolographicFlower(ctx, cx, cy, t, scale, config) {
     }
   }
 
-  // ── CENTRO ──
   const cGrd = ctx.createRadialGradient(0, 0, 0, 0, 0, scale * 0.12);
   cGrd.addColorStop(0, `hsla(${hue1},60%,92%,${alpha * 0.9})`);
   cGrd.addColorStop(0.5, `hsla(${hue2},65%,78%,${alpha * 0.5})`);
@@ -601,13 +594,11 @@ function drawHolographicFlower(ctx, cx, cy, t, scale, config) {
   ctx.fillStyle = cGrd;
   ctx.fill();
   
-  // punto central
   ctx.beginPath();
   ctx.arc(0, 0, scale * 0.035, 0, Math.PI * 2);
   ctx.fillStyle = `hsla(${hue1},50%,95%,${alpha * 0.8})`;
   ctx.fill();
   
-  // Destellos tipo ✦
   for (let s = 0; s < 3; s++) {
     const sa = t * 0.3 + s * 2.1;
     const sr = scale * (0.55 + s * 0.22);
@@ -631,19 +622,15 @@ const c1=document.getElementById('canvas1'),cx1=c1.getContext('2d');
 function r1(){c1.width=innerWidth;c1.height=innerHeight}r1();
 window.addEventListener('resize',r1);
 
-// 6 flores distribuidas en los bordes
 const flowers1 = [
-  // Izquierda
   {xr:.08, yr:.18, scale:0.13, petals:8, layers:5, hue1:270, hue2:200, alpha:.7, style:'lotus'},
   {xr:.06, yr:.55, scale:0.10, petals:6, layers:4, hue1:290, hue2:220, alpha:.55, style:'aura'},
   {xr:.09, yr:.82, scale:0.11, petals:7, layers:4, hue1:250, hue2:180, alpha:.6, style:'lotus'},
-  // Derecha
   {xr:.92, yr:.15, scale:0.12, petals:9, layers:5, hue1:300, hue2:230, alpha:.65, style:'aura'},
   {xr:.94, yr:.5,  scale:0.09, petals:6, layers:4, hue1:270, hue2:200, alpha:.5, style:'lotus'},
   {xr:.91, yr:.78, scale:0.13, petals:8, layers:5, hue1:280, hue2:210, alpha:.7, style:'aura'},
 ];
 
-// Partículas pequeñas
 const pts1 = Array.from({length:80},()=>({
   x:Math.random(),y:Math.random(),
   r:Math.random()*.8+.15,o:Math.random()*.18+.03,
@@ -657,7 +644,6 @@ function dp1(){
   t1+=.008;
   const W=c1.width,H=c1.height;
   
-  // Partículas mínimas
   pts1.forEach(s=>{
     s.x+=s.dx;s.y+=s.dy;
     if(s.x>1)s.x=0;if(s.x<0)s.x=1;if(s.y>1)s.y=0;if(s.y<0)s.y=1;
@@ -666,7 +652,6 @@ function dp1(){
     cx1.fillStyle=`rgba(113,146,65,${s.o*(0.3+tw*.7)})`;cx1.fill();
   });
   
-  // Flores holográficas
   flowers1.forEach(f=>{
     const W=c1.width,H=c1.height;
     const sc = Math.min(W,H)*f.scale;
@@ -771,8 +756,8 @@ function closeSub(id){document.getElementById(id).classList.remove('open')}
 // ARTE DIGITAL GRID — flores generativas pequeñas
 // ══════════════════════════════════════════
 const items=[
-  'Nebulosa Antioqueña','Danza Orbital','Curvas de Luz','Jaguar Estelar',
-  'Frailejón Celeste','Orquídea Binaria','Memoria del Cuerpo','Colibrí de Quark'
+  'Estudio Generativo 01','Estudio Generativo 02','Curvas de Luz','Estudio Generativo 03',
+  'Estudio Generativo 04','Estudio Generativo 05','Estudio Generativo 06','Estudio Generativo 07'
 ];
 const flowerConfigs=[
   {petals:8,layers:5,hue1:270,hue2:200,style:'lotus'},
